@@ -3,7 +3,6 @@ import uuid
 
 def gerar_lista():
     print("Buscando canais da Pluto TV...")
-    # API com localização Brasil
     url_api = "https://api.pluto.tv/v2/channels?marketingRegion=BR&locale=pt-BR"
     
     try:
@@ -15,14 +14,12 @@ def gerar_lista():
             
             for c in canais:
                 if 'stitched' in c and c['stitched']['urls']:
-                    # Pegamos a URL base sem parâmetros antigos
                     url_base = c['stitched']['urls'][0]['url'].split('?')[0]
                     
-                    # Geramos IDs únicos para simular um dispositivo real
                     session_id = str(uuid.uuid4())
                     device_id = str(uuid.uuid4())
                     
-                    # Parâmetros obrigatórios para não dar erro de SID
+                    # --- PARAMETROS ATUALIZADOS PARA EVITAR ERRO DE DEVICEVERSION ---
                     params = (
                         f"appName=web&"
                         f"appVersion=5.33.0&"
@@ -31,11 +28,13 @@ def gerar_lista():
                         f"deviceMake=Chrome&"
                         f"deviceModel=web&"
                         f"deviceType=web&"
-                        f"sid={session_id}&"  # ESTE É O CAMPO QUE ESTAVA FALTANDO
+                        f"deviceVersion=120.0.0.0&"  # <-- ADICIONADO AQUI
+                        f"sid={session_id}&"
                         f"userId={device_id}&"
                         f"marketingRegion=BR&"
                         f"locale=pt-BR&"
-                        f"lang=pt"
+                        f"lang=pt&"
+                        f"includeExtendedEvents=false" # <-- ADICIONADO PARA ESTABILIDADE
                     )
                     
                     link_final = f"{url_base}?{params}"
@@ -47,9 +46,9 @@ def gerar_lista():
                     f.write(f'#EXTINF:-1 tvg-id="{c.get("_id","")}" tvg-logo="{logo}" group-title="{cat}",{nome}\n')
                     f.write(f'{link_final}\n')
                     
-        print("✅ Arquivo lista.m3u gerado com sucesso com SIDs válidos!")
+        print("✅ Arquivo lista.m3u corrigido com DeviceVersion!")
     except Exception as e:
-        print(f"❌ Erro ao gerar lista: {e}")
+        print(f"❌ Erro: {e}")
 
 if __name__ == "__main__":
     gerar_lista()
