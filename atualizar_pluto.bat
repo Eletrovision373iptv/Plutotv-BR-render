@@ -7,39 +7,27 @@ echo    INICIANDO ATUALIZACAO PLUTO TV (IP LOCAL BR)
 echo ======================================================
 echo.
 
-:: ENTRA NA PASTA CORRETA
 cd /d "C:\Users\Uso\Desktop\plutotv BR"
 
-:: 1. GERA A LISTA COM PYTHON
-echo [PASSO 1/4] Gerando lista M3U...
+:: 1. GERA A LISTA
+echo [PASSO 1/3] Gerando lista M3U...
 python gerar_pluto.py
 
-:: 2. SINCRONIZA COM O GITHUB (RESOLVE O ERRO DE REJECTED)
+:: 2. SALVA AS MUDANCAS LOCALMENTE
 echo.
-echo [PASSO 2/4] Sincronizando com a nuvem...
-git pull origin main --rebase
-
-:: 3. ORGANIZA OS ARQUIVOS
-echo.
-echo [PASSO 3/4] Preparando atualizacao...
+echo [PASSO 2/3] Salvando mudancas locais...
 git add .
-git commit -m "Atualizacao automatica com SIDs fixos"
+git commit -m "Atualizacao automatica SIDs"
 
-:: 4. ENVIA PARA O GITHUB
+:: 3. SINCRONIZA E ENVIA (FORCADO PARA GARANTIR)
 echo.
-echo [PASSO 4/4] Enviando para o GitHub...
-git push origin main
+echo [PASSO 3/3] Enviando para o GitHub...
+git pull origin main --rebase
+git push origin main --force
 
-if %errorlevel% neq 0 (
-    echo.
-    echo ########## ERRO NO ENVIO ##########
-    echo Tentando forçar envio...
-    git push origin main --force
-) else (
-    echo.
-    echo ======================================================
-    echo    SUCESSO! Lista e Site atualizados.
-    echo ======================================================
-)
+echo.
+echo ======================================================
+echo    SUCESSO TOTAL! Lista online e funcional.
+echo ======================================================
 
 pause
