@@ -121,6 +121,13 @@ app.get('/lista.m3u', (req, res) => {
     res.redirect(M3U_URL);
 });
 
+// ... (resto do código anterior)
+
+// Rota simples apenas para o UptimeRobot bater e manter vivo
+app.get('/ping', (req, res) => {
+    res.send('Acordado!');
+});
+
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Painel Eletrovision rodando na porta ${PORT}`);
+    console.log(`🚀 Painel rodando na porta ${PORT}`);
 });
