@@ -11,30 +11,34 @@ echo.
 cd /d "C:\Users\Uso\Desktop\plutotv BR"
 
 :: 1. GERA A LISTA COM PYTHON
-echo [PASSO 1/3] Gerando lista M3U...
+echo [PASSO 1/4] Gerando lista M3U...
 python gerar_pluto.py
 
-:: 2. ORGANIZA OS ARQUIVOS (ADICIONA TUDO PARA EVITAR ERRO)
+:: 2. SINCRONIZA COM O GITHUB (RESOLVE O ERRO DE REJECTED)
 echo.
-echo [PASSO 2/3] Preparando Git...
-git add .
-git commit -m "Lista e scripts atualizados"
+echo [PASSO 2/4] Sincronizando com a nuvem...
+git pull origin main --rebase
 
-:: 3. ENVIA PARA O GITHUB (CORREÇÃO DE MASTER PARA MAIN)
+:: 3. ORGANIZA OS ARQUIVOS
 echo.
-echo [PASSO 3/3] Enviando para o GitHub...
-:: Este comando renomeia sua branch local para 'main' para bater com o GitHub
-git branch -M main
-git push -u origin main
+echo [PASSO 3/4] Preparando atualizacao...
+git add .
+git commit -m "Atualizacao automatica com SIDs fixos"
+
+:: 4. ENVIA PARA O GITHUB
+echo.
+echo [PASSO 4/4] Enviando para o GitHub...
+git push origin main
 
 if %errorlevel% neq 0 (
     echo.
-    echo ########## ERRO NO GIT ##########
-    echo Verifique se o repositorio no GitHub existe ou se precisa de login.
+    echo ########## ERRO NO ENVIO ##########
+    echo Tentando forçar envio...
+    git push origin main --force
 ) else (
     echo.
     echo ======================================================
-    echo    SUCESSO! Site e M3U atualizados no GitHub.
+    echo    SUCESSO! Lista e Site atualizados.
     echo ======================================================
 )
 
