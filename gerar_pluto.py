@@ -3,7 +3,7 @@ import uuid
 
 def gerar_lista():
     print("Buscando canais da Pluto TV...")
-    url_api = "https://api.pluto.tv/v2/channels?marketingRegion=BR&locale=pt-BR"
+    url_api = "https://raw.githubusercontent.com/BuddyChewChew/pluto/main/pluto_br.m3u"
     
     try:
         response = requests.get(url_api)
